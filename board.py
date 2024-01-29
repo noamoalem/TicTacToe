@@ -1,14 +1,16 @@
+import random
 import tkinter as tk
 from game import Game
 from tkinter import font
 
 class Board(tk.Tk):
-    def __init__(self, game):
+    def __init__(self, game, one_or_two_players=2):
         super().__init__()
         self.title("Tic Tac Toe")
         self.photo_o = tk.PhotoImage(file=r"O.PNG")
         self.photo_x = tk.PhotoImage(file=r"X.PNG")
         self.photo_b = tk.PhotoImage(file=r"blank.PNG")
+        self.one_or_two_players = one_or_two_players
         self.cells = {}
         self.game = game
         self.create_board()
@@ -23,7 +25,7 @@ class Board(tk.Tk):
         i = 0
         for r in range(3):
             for c in range(3):
-                button = tk.Button(master=self.grid_frame, image=self.photo_b)
+                button = tk.Button(master=self.grid_frame, image=self.photo_b, bg='white')
                 self.cells[button] = i
                 button.bind("<ButtonPress-1>", self.play)
                 button.grid(row=r, column=c, padx=2, pady=2, sticky="nsew")
@@ -64,6 +66,14 @@ class Board(tk.Tk):
                 msg = f"{self.game.players[self.game.curr_player].symbol}'s turn"
                 color = self.game.players[self.game.curr_player].color
                 self.update_txt_display(msg, color)
+                # if we play against the computer
+                if self.one_or_two_players == 1 and self.game.players[self.game.curr_player].symbol == 'O':
+                    i = random.randint(0, 8)
+                    clicked_btnA = [b for b in self.cells.keys() if self.cells[b] == i][0]
+                    while not self.game.is_valid_move(i):
+                        i = random.randint(0, 8)
+                        clicked_btnA = [b for b in self.cells.keys() if self.cells[b]==i][0]
+                    clicked_btnA.event_generate("<ButtonPress-1>") # simulate buttom pressed
 
     def finished_game(self):
         win_x = self.winfo_rootx() + 300
@@ -93,9 +103,12 @@ class Board(tk.Tk):
 def main():
     gui_or_terminal = input("Do you want want to play with gui or temrinal? G/T ")
     game = Game(gui_or_terminal)
-    if gui_or_terminal =='G':
-        # gui_or_terminal = input("Do you want want to play with gui or temrinal? G/T ")
-        board = Board(game)
+    if gui_or_terminal == 'G':
+        one_or_two_players = input("Do you want want to play against the computer? Y/N ")
+        if one_or_two_players == 'Y':
+            board = Board(game, 1)
+        else:
+            board = Board(game, 2)
         board.mainloop()
     else:
         game.game_loop()
