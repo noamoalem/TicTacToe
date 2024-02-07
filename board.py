@@ -68,12 +68,56 @@ class Board(tk.Tk):
                 self.update_txt_display(msg, color)
                 # if we play against the computer
                 if self.one_or_two_players == 1 and self.game.players[self.game.curr_player].symbol == 'O':
-                    i = random.randint(0, 8)
+                    # i = random.randint(0, 8)
+                    i = self.computer_player()
                     clicked_btnA = [b for b in self.cells.keys() if self.cells[b] == i][0]
                     while not self.game.is_valid_move(i):
-                        i = random.randint(0, 8)
+                        # i = random.randint(0, 8)
+                        i = self.computer_player()
                         clicked_btnA = [b for b in self.cells.keys() if self.cells[b]==i][0]
                     clicked_btnA.event_generate("<ButtonPress-1>") # simulate buttom pressed
+
+    def computer_player(self) -> int:
+        board = self.game.get_board()
+        # check rows
+        if board[0] == board[1] == 'X' and board[2] == ' ':
+            return 2
+        elif board[1] == board[2] == 'X' and board[0] == ' ':
+            return 0
+        elif board[3] == board[4] == 'X' and board[5] == ' ':
+            return 5
+        elif board[4] == board[5] == 'X' and board[3] == ' ':
+            return 3
+        elif board[6] == board[7] == 'X' and board[8] == ' ':
+            return 8
+        elif board[7] == board[8] == 'X' and board[6] == ' ':
+            return 6
+        # check cols
+        if board[0] == board[3] == 'X' and board[6] == ' ':
+            return 6
+        elif board[3] == board[6] == 'X' and board[0] == ' ':
+            return 0
+        elif board[1] == board[4] == 'X' and board[7] == ' ':
+            return 7
+        elif board[4] == board[7] == 'X' and board[1] == ' ':
+            return 1
+        elif board[2] == board[5] == 'X' and board[8] == ' ':
+            return 8
+        elif board[5] == board[8] == 'X' and board[2] == ' ':
+            return 2
+        # check diagonal
+        if board[0] == board[4] == 'X' and board[8] == ' ':
+            return 8
+        elif board[4] == board[8] == 'X' and board[0] == ' ':
+            return 0
+        elif board[2] == board[4] == 'X' and board[6] == ' ':
+            return 6
+        elif board[4] == board[6] == 'X' and board[2] == ' ':
+            return 2
+        else:
+            return random.randint(0, 8)
+
+
 
     def finished_game(self):
         win_x = self.winfo_rootx() + 300
