@@ -2,6 +2,7 @@ from player import *
 from typing import List
 
 class Game:
+
     def __init__(self, gui_or_terminal):
         if gui_or_terminal == 'T':
             self.use_terminal = True
@@ -183,16 +184,22 @@ class Game:
 
     def reset_game(self) -> None:
         """
-        This function reset the game.
+        This function ask the player if he wants to keep playing and if so its reset the game.
         """
         keep_playing = input("Do you want to keep playing? Y/N ")
         if keep_playing == "Y":
-            self.board = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
-            self.define_players()
-            self.print_board()
-            self.game_on = True
+            self.reset_game_board()
         else:
             exit()
+
+    def reset_game_board(self):
+        """
+        This function reset the game board and state.
+        """
+        self.board = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
+        self.define_players()
+        self.print_board()
+        self.game_on = True
 
     def game_loop(self) -> None:
         """
@@ -206,6 +213,6 @@ class Game:
                 self.print_score()
                 self.reset_game()
 
-if __name__ == '__main__':
-    game  = Game('T')
-    game.game_loop()
+# if __name__ == '__main__':
+#     game  = Game('T')
+#     game.game_loop()
