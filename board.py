@@ -110,36 +110,52 @@ class Board(tk.Tk):
             return 2
         elif board[1] == board[2] == 'X' and board[0] == ' ':
             return 0
+        elif board[0] == board[2] == 'X' and board[1] == ' ':
+            return 1
         elif board[3] == board[4] == 'X' and board[5] == ' ':
             return 5
         elif board[4] == board[5] == 'X' and board[3] == ' ':
             return 3
+        elif board[3] == board[5] == 'X' and board[4] == ' ':
+            return 4
         elif board[6] == board[7] == 'X' and board[8] == ' ':
             return 8
         elif board[7] == board[8] == 'X' and board[6] == ' ':
             return 6
+        elif board[6] == board[8] == 'X' and board[7] == ' ':
+            return 7
         # check cols
         if board[0] == board[3] == 'X' and board[6] == ' ':
             return 6
         elif board[3] == board[6] == 'X' and board[0] == ' ':
             return 0
+        elif board[0] == board[6] == 'X' and board[3] == ' ':
+            return 3
         elif board[1] == board[4] == 'X' and board[7] == ' ':
             return 7
         elif board[4] == board[7] == 'X' and board[1] == ' ':
             return 1
+        elif board[1] == board[7] == 'X' and board[4] == ' ':
+            return 4
         elif board[2] == board[5] == 'X' and board[8] == ' ':
             return 8
         elif board[5] == board[8] == 'X' and board[2] == ' ':
             return 2
+        elif board[2] == board[8] == 'X' and board[5] == ' ':
+            return 5
         # check diagonal
         if board[0] == board[4] == 'X' and board[8] == ' ':
             return 8
         elif board[4] == board[8] == 'X' and board[0] == ' ':
             return 0
+        elif board[0] == board[8] == 'X' and board[4] == ' ':
+            return 4
         elif board[2] == board[4] == 'X' and board[6] == ' ':
             return 6
         elif board[4] == board[6] == 'X' and board[2] == ' ':
             return 2
+        elif board[2] == board[6] == 'X' and board[4] == ' ':
+            return 4
         else:
             return random.randint(0, 8)
 
