@@ -99,65 +99,79 @@ class Board(tk.Tk):
                         clicked_btn_comp = [b for b in self.cells.keys() if self.cells[b]==i][0]
                     clicked_btn_comp.event_generate("<ButtonPress-1>") # simulate buttom pressed
 
-    def computer_player(self) -> int:
+    def find_winning_cell(self, player: str) -> int:
         """
-        This function play a turn of the computer player.
-        It search for a a position that prevent the other player to win.
+        This function find is any of the empty cells on the board can lead the given player to win the game.
+        :param player: a given player.
+        :return: cell number that lead the given player to win if exist, -1 otherwise.
         """
         board = self.game.get_board()
         # check rows
-        if board[0] == board[1] == 'X' and board[2] == ' ':
+        if board[0] == board[1] == player and board[2] == ' ':
             return 2
-        elif board[1] == board[2] == 'X' and board[0] == ' ':
+        elif board[1] == board[2] == player and board[0] == ' ':
             return 0
-        elif board[0] == board[2] == 'X' and board[1] == ' ':
+        elif board[0] == board[2] == player and board[1] == ' ':
             return 1
-        elif board[3] == board[4] == 'X' and board[5] == ' ':
+        elif board[3] == board[4] == player and board[5] == ' ':
             return 5
-        elif board[4] == board[5] == 'X' and board[3] == ' ':
+        elif board[4] == board[5] == player and board[3] == ' ':
             return 3
-        elif board[3] == board[5] == 'X' and board[4] == ' ':
+        elif board[3] == board[5] == player and board[4] == ' ':
             return 4
-        elif board[6] == board[7] == 'X' and board[8] == ' ':
+        elif board[6] == board[7] == player and board[8] == ' ':
             return 8
-        elif board[7] == board[8] == 'X' and board[6] == ' ':
+        elif board[7] == board[8] == player and board[6] == ' ':
             return 6
-        elif board[6] == board[8] == 'X' and board[7] == ' ':
+        elif board[6] == board[8] == player and board[7] == ' ':
             return 7
         # check cols
-        if board[0] == board[3] == 'X' and board[6] == ' ':
+        if board[0] == board[3] == player and board[6] == ' ':
             return 6
-        elif board[3] == board[6] == 'X' and board[0] == ' ':
+        elif board[3] == board[6] == player and board[0] == ' ':
             return 0
-        elif board[0] == board[6] == 'X' and board[3] == ' ':
+        elif board[0] == board[6] == player and board[3] == ' ':
             return 3
-        elif board[1] == board[4] == 'X' and board[7] == ' ':
+        elif board[1] == board[4] == player and board[7] == ' ':
             return 7
-        elif board[4] == board[7] == 'X' and board[1] == ' ':
+        elif board[4] == board[7] == player and board[1] == ' ':
             return 1
-        elif board[1] == board[7] == 'X' and board[4] == ' ':
+        elif board[1] == board[7] == player and board[4] == ' ':
             return 4
-        elif board[2] == board[5] == 'X' and board[8] == ' ':
+        elif board[2] == board[5] == player and board[8] == ' ':
             return 8
-        elif board[5] == board[8] == 'X' and board[2] == ' ':
+        elif board[5] == board[8] == player and board[2] == ' ':
             return 2
-        elif board[2] == board[8] == 'X' and board[5] == ' ':
+        elif board[2] == board[8] == player and board[5] == ' ':
             return 5
         # check diagonal
-        if board[0] == board[4] == 'X' and board[8] == ' ':
+        if board[0] == board[4] == player and board[8] == ' ':
             return 8
-        elif board[4] == board[8] == 'X' and board[0] == ' ':
+        elif board[4] == board[8] == player and board[0] == ' ':
             return 0
-        elif board[0] == board[8] == 'X' and board[4] == ' ':
+        elif board[0] == board[8] == player and board[4] == ' ':
             return 4
-        elif board[2] == board[4] == 'X' and board[6] == ' ':
+        elif board[2] == board[4] == player and board[6] == ' ':
             return 6
-        elif board[4] == board[6] == 'X' and board[2] == ' ':
+        elif board[4] == board[6] == player and board[2] == ' ':
             return 2
-        elif board[2] == board[6] == 'X' and board[4] == ' ':
+        elif board[2] == board[6] == player and board[4] == ' ':
             return 4
-        else:
-            return random.randint(0, 8)
+        return -1
+
+    def computer_player(self) -> int:
+        """
+        This function play a turn of the computer player.
+        It search for a a position that can help him win or prevent the other player to win.
+        :return: the choosen cell for the computer palyer.
+        """
+        choosen_cell = self.find_winning_cell('O') # tries to find a winning cell
+        if choosen_cell != -1:
+            return choosen_cell
+        choosen_cell = self.find_winning_cell('X') # tries to block the other player
+        if choosen_cell != -1:
+            return choosen_cell
+        return random.randint(0, 8)
 
     def finished_game(self) -> None:
         """
