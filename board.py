@@ -5,14 +5,14 @@ from tkinter import font
 
 class Board(tk.Tk):
 
-    def __init__(self, game, one_or_two_players=2):
+    def __init__(self, game: Game, one_or_two_players: int=2):
         super().__init__()
         self.title("Tic Tac Toe")
         self.photo_o = tk.PhotoImage(file=r"O.PNG")
         self.photo_x = tk.PhotoImage(file=r"X.PNG")
         self.photo_b = tk.PhotoImage(file=r"blank.PNG")
         self.one_or_two_players = one_or_two_players
-        self.cells = {}
+        self.cells = {} # {tk.Button: i}
         self.game = game
         self.create_board()
 
@@ -36,7 +36,7 @@ class Board(tk.Tk):
                 button.grid(row=r, column=c, padx=2, pady=2, sticky="nsew")
                 i+=1
 
-    def update_button_display(self, clicked_btn) -> None:
+    def update_button_display(self, clicked_btn: tk.Button) -> None:
         """
         This function update the given pressed button display.
         :param clicked_btn: a given pressed button.
@@ -62,7 +62,7 @@ class Board(tk.Tk):
         self.txt_display["text"] = txt
         self.txt_display["fg"] = color
 
-    def play(self, event) -> None:
+    def play(self, event: tk.Event) -> None:
         """
         This function playes one turn if two players play against each other, or two turns if
         the player play against the computer.
@@ -190,7 +190,7 @@ class Board(tk.Tk):
         button2.pack()
         button2.bind("<ButtonPress-1>", self.kill)
 
-    def reset_board(self, event) -> None:
+    def reset_board(self, event: tk.Event) -> None:
         """
         This function reset the game and the game board.
         :param event: ButtonPress event.
@@ -199,7 +199,7 @@ class Board(tk.Tk):
         self.reset_buttons_display()
         self.update_txt_display("Start Play")
 
-    def kill(self, event) -> None:
+    def kill(self, event: tk.Event) -> None:
         """
         This function kill the game GUI if the user pressed the relevant button.
         :param event: ButtonPress event.

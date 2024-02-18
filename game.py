@@ -3,7 +3,7 @@ from typing import List
 
 class Game:
 
-    def __init__(self, gui_or_terminal):
+    def __init__(self, gui_or_terminal: str):
         if gui_or_terminal == 'T':
             self.use_terminal = True
         else:
